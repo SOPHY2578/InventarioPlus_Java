@@ -1,0 +1,15 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>co.edu.inventarioplus</groupId>
+    <artifactId>InventarioPlus</artifactId>
+    <version>1.0.0</version>
+
+    <dependencies>
+        <!-- JDBC para MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+    </dependencies>
+</project>
