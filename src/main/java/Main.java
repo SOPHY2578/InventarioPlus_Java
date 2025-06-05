@@ -1,10 +1,6 @@
-// ↓↓↓ REEMPLAZA LOS IMPORTS ACTUALES CON ESTOS ↓↓↓
 import com.inventarioplus.model.Producto;
-import com.inventarioplus.persistencia.ProductoDAO;
+import com.inventarioplus.dao.ProductoDAO;
 import java.sql.SQLException;
-// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
-
 public class Main {
     public static void main(String[] args) {
         // 1. Crear instancia del DAO
@@ -36,8 +32,22 @@ public class Main {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error en operación CRUD: ");
-            e.printStackTrace();
+            // ★★★ NUEVO MANEJO DE ERRORES (Opción 3) ★★★
+            switch (e.getSQLState()) {
+                case "23000": // Violación de constraint (ej: duplicados)
+                    System.err.println("Error: El producto ya existe");
+                    break;
+                case "08001": // Error de conexión
+                    System.err.println("Error al conectar con la base de datos");
+                    break;
+                case "23505": // Violación de unique key (otro tipo de duplicado)
+                    System.err.println("Error: El ID o nombre del producto ya está registrado");
+                    break;
+                default:
+                    System.err.printf("Error SQL [%s]: %s%n", 
+                        e.getSQLState(), e.getMessage());
+            }
+            // (Opcional) Para depuración:
         }
     }
 }
